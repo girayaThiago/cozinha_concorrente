@@ -22,31 +22,32 @@ void Gerente::abrir_restaurante(){
 }
 
 void Gerente::cliente_para_fila(Cliente* c){
-    sem_wait(sem_controle_clientes); //concorrencia no acesso a fila
+    sem_wait(&sem_controle_clientes); //concorrencia no acesso a fila
     fila_clientes.push(c);
-    sem_post(sem_controle_clientes);
-    sem_post(sem_cliente_pediu);//adiciona na fila e avisa que precisa de atendimento;
+    sem_post(&sem_controle_clientes);
+    sem_post(&sem_sinal_atendimento); //adiciona na fila e avisa que precisa de atendimento;
 }
 
 Cliente* Gerente::atender_cliente(){
-    sem_wait(sem_controle_clientes);
+    sem_wait(&sem_controle_clientes);
     Cliente* c = fila_clientes.front();
-    file_clientes.pop();
-    sem_post(sem_controle_clientes);
+    fila_clientes.pop();
+    sem_post(&sem_controle_clientes);
     return c;
 }
 
-Comanda* Gerente::comanda_para_fila(Comanda* c){
-    sem_wait(sem_controle_comandas);
+void Gerente::comanda_para_fila(Comanda* c){
+    sem_wait(&sem_controle_comandas);
     fila_comandas.push(c);
+    sem_post(&sem_controle_comandas);
+}
+
+Comanda* Gerente::pegar_comanda(){
+    sem_wait(&sem_controle_comandas);
     Comanda* c = fila_comandas.front();
     fila_comandas.pop();
-    sem_post(sem_controle_comandas);
+    sem_post(&sem_controle_comandas);
     return c;
-}
-
-Comanda* Gerente::pegar_comanda(Comanda* c){
-
 }
 
 Gerente::Gerente(){
@@ -57,9 +58,10 @@ Gerente::Gerente(){
     // quantidade de lugares para os clientes inicialmente;
     sem_init(&sem_mesas, 0, 6);
     
-    // pedidos feitos por clientes inicialmente;
-    sem_init(&sem_pedido_cliente, 0, 0); 
+    // nenhum atendimento requisitado inicialmente;
+    sem_init(&sem_sinal_atendimento, 0, 0); 
 
-    //somente 1 pessoa pode operar nas comandas por vez;
+    //somente 1 thread pode operar por vez;
     sem_init(&sem_controle_comandas,0,1); 
+    sem_init(&sem_controle_clientes,0,1);
 }

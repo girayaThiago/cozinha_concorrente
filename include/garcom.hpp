@@ -22,14 +22,10 @@ private:
 	static sem_t sem_fila;
 	
 public:
-	void pedir(Cliente* c, Pedido* p);
-	std::queue<Comanda> fila_atendimento; // cada garçom tem uma fila para lembrar das suas mesas
-	static sem_t sem_mesas;
-	static sem_t sem_atendimento;
 	Garcom();
 	//inheritance
 	void start(void);
-	
+	static void pedir(Cliente* c,Pedido* p); //recebe um pedido de um cliente
 };
 
 

@@ -34,18 +34,24 @@ public:
 	
 	// controle de acesso por volume;
 	sem_t sem_mesas; // representa clientes que possuem uma mesa no restaurante;
-	sem_t sem_cliente_pediu; // representa um cliente pedindo atendimento;
-	sem_t sem_pedido;
+	
+	// controle de fluxo sinais
+	sem_t sem_sinal_atendimento; // representa um sinal de atendimento (pedido pronto || cliente chamou)
+	sem_t sem_sinal_cozinha; // representa um sinal de preparo para a cozinha (pedido chegou);
 
 	//controle de acesso a variáveis
 	sem_t sem_controle_clientes;
 	sem_t sem_controle_comandas;
 
-	void abrir_restaurante();
+	void abrir_restaurante(); // libera as threads
 	static Gerente* getManager(); //pega o singleton do gerente.
-	void cliente_para_fila(Cliente* c);
-
 	
+	void cliente_para_fila(Cliente* c);
+	Cliente* atender_cliente();
+
+	void comanda_para_fila(Comanda* c);
+	Comanda* pegar_comanda();
+
 };
 
 #endif /* gerente_hpp */
