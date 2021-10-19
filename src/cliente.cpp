@@ -36,6 +36,8 @@ void* Cliente::run(void* args){
 	printf("Cliente %d pegou uma mesa\n", c.id);
 	//2. escolher o pedido
 	Pedido p = c.decidir(); 
+	g.cliente_para_fila(&c);
+	// sem_wait(sem_)
 	
 	// inserir cliente na fila de atendimento;
 	//3. chamar garçom (post no semaforo que os garçoms estão esperando)

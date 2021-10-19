@@ -19,8 +19,8 @@ class Cliente: public ThreadedClass {
 private:
 	inline static int instances = 0;
 	static void* run(void* args);
-	Pedido decidir();
-	
+	void decidir();
+	Pedido p;
 public:
 	
 	Cliente();
