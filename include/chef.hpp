@@ -10,20 +10,20 @@
 
 #include <stdio.h>
 #include <string>
-#include "../include/pedido.hpp"
+#include "../include/comanda.hpp"
 #include "../include/threadedClass.hpp"
 
 using namespace std;
 
 class Chef: public ThreadedClass{
 private:
+	Comanda* comanda_atual;
 	inline static int instances = 0;
 	static void* run(void* args);
-	int confere(Pedido p);
-	void prepara(Pedido p);
-public:
-	void recebe(Pedido p);
 	
+public:
+	void receber_comanda();
+	void devolver_pedido();
 	Chef();
 	//inheritance
 	void start(void);

@@ -9,7 +9,6 @@
 #define pedido_hpp
 
 #include <stdio.h>
-#include <semaphore.h>
 
 enum Proteina: int {
 	Carne = 0, Porco, Frango

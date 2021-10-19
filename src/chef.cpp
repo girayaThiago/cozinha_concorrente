@@ -15,31 +15,23 @@ void* Chef::run(void *args){
 	Chef& c = *((Chef*)args);
 	c.wait();
 	printf("Chef %d começou\n", c.id);
-	//loop de execução
+	//1. espera um pedido chegar (gerente)
+	//2. verifica disponibilidade dos ingredientes
+		//2.1 se disponivel prepara
+		//2.2 se não buscar mais
+	//3.devolve o pedido (implica 2 filas de pedidos, á fazer e prontos).
+	//4. volta para 1.  
 	return nullptr;
 }
 
-
-void Chef::prepara(Pedido p){
-	
-}
-
-int Chef::confere(Pedido p){
-	//verificar a disponibilidade dos ingredientes
-	//se faltar um produzir mais. se o estoque ficar crítico, pedir mais.
-	//se já estiver sendo produzido, passar para o proximo pedido.
-	return 0;
-}
 
 Chef::Chef(){
 	id = instances++;
 }
 
-void Chef::recebe(Pedido p){
-	if (confere(p)){
-		prepara(p);
-	} else {
-		
-	}
-	
+void Chef::receber_comanda(){
+
+}
+void Chef::devolver_pedido(){
+
 }

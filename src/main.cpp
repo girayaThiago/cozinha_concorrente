@@ -9,27 +9,27 @@
 #include "../include/cliente.hpp"
 #include "../include/chef.hpp"
 #include "../include/garcom.hpp"
-#include "../include/locksmith.hpp"
+#include "../include/gerente.hpp"
 
 #define N_CLIENTES 12
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-	srand(NULL);
+	// srand(NULL);
+	Gerente& g = *(Gerente::getManager());
 	Cliente clientes[N_CLIENTES];
 	Chef chefs[2];
 	Garcom garcons[4];
 	
-	pthread_rwlock_wrlock(&Locksmith::barrier_lock);
 	for (auto & c : clientes) c.start();
-//	for (auto & c : chefs) c.start();
-//	for (auto & g : garcons) g.start();
+	for (auto & c : chefs) c.start();
+	for (auto & g : garcons) g.start();
 	
-	pthread_rwlock_unlock(&Locksmith::barrier_lock);
+	g.abrir_restaurante();
 	for (auto & c : clientes) c.join();
-//	for (auto & c : chefs) c.join();
-//	for (auto & g : garcons) g.join();
+	for (auto & c : chefs) c.join();
+	for (auto & g : garcons) g.join();
 	
 	
 }

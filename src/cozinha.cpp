@@ -6,13 +6,7 @@
 //
 
 #include "../include/cozinha.hpp"
-#include "../include/pedido.hpp"
+#include "../include/comanda.hpp"
 #include <queue>
 
 
-class Cozinha {
-private:
-	std::queue<Pedido> pedidos; //fila de pedidos
-public:
-	
-};

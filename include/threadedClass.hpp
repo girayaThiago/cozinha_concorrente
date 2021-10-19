@@ -15,7 +15,7 @@
 /// ë necessário implementar uma função estática em cada classe que for derivada desta, para ser o ponteiro na hora de criar a thread.
 class ThreadedClass {
 protected:
-	//
+
 	pthread_t thread;
 	
 	//static void * run(void * args); todo mundo tem que ter uma dessas

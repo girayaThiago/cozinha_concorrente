@@ -9,42 +9,51 @@
 #include <unistd.h>
 #include <chrono>
 #include <iostream>
-#include "../include/locksmith.hpp"
+#include "../include/gerente.hpp"
 #include "../include/garcom.hpp"
 
 using namespace std;
 Cliente::Cliente() {
 	id = instances++;
-//	sem_init(&sem_pedido, 0, 0); //nenhum cliente com pedido em mente.
 }
 
 
 void Cliente::start(){
-//	printf("Criando thread para Cliente %d\n", id);
 	pthread_create(&thread, NULL, run, this);
 }
 
 void* Cliente::run(void* args){
+	Gerente &g = *(Gerente::getManager());
 	Cliente &c = *((Cliente*) args);
 	c.wait();
 	printf("Cliente %d começou\n", c.id);
-//	sem_wait(&Garcom::sem_mesas); // esperar uma mesa
-//	Pedido p = c.decidir(); // escolher o pedido
-//	sem_post(&sem_pedido); // levanta a mão para ser atendido
-//	sem_wait(&Garcom::sem_atendimento); // aguardar um garçom para atender
-//	//garçom chegou passar pedido;
-//	sem_wait(&Locksmith::sem_pedido); // pegou o lock para mecher nos pedidos
-//	Garcom::pedir(&c, &p);
 	
+	//1. tenta esperar uma mesa
+	if (sem_trywait(&g.sem_mesas) != 0){
+		printf("Cliente %d está aguardando na fila\n", c.id);
+		sem_wait(&g.sem_mesas);
+	}
+	printf("Cliente %d pegou uma mesa\n", c.id);
+	//2. escolher o pedido
+	Pedido p = c.decidir(); 
 	
-//	c.levantarMao();
-//	c.pedir();
+	// inserir cliente na fila de atendimento;
+	//3. chamar garçom (post no semaforo que os garçoms estão esperando)
+	
+	//4. esperar garçom chegar depois de escolher
+	
+
+	
+
+	// 5. depois de comer liberar mesa
+	sem_post(&g.sem_mesas);
+
 	printf("Cliente %d terminou\n", c.id);
-	
 	return NULL;
 }
 
 Pedido Cliente::decidir() {
-	sleep(rand()%3+1);
-	return Pedido(rand()%3, rand()%4, rand()%4);
+	printf("Cliente %d está escolhendo o que comer\n", id);
+	sleep(rand()%4+1);
+	return Pedido(rand()%3, rand()%4, rand()%4); //escolhe um prato random
 }

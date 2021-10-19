@@ -19,8 +19,7 @@ private:
 	
 	inline static int instances = 0;
 	static void* run(void* args);
-	
-//	static sem_t sem_fila;
+	static sem_t sem_fila;
 	
 public:
 	void pedir(Cliente* c, Pedido* p);

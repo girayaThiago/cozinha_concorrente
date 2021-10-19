@@ -6,8 +6,8 @@
 //
 
 #include <stdio.h>
-#include "threadedClass.hpp"
-#include "locksmith.hpp"
+#include "../include/threadedClass.hpp"
+#include "../include/gerente.hpp"
 
 
 void ThreadedClass::join() {
@@ -15,5 +15,5 @@ void ThreadedClass::join() {
 }
 
 void ThreadedClass::wait(){
-	pthread_rwlock_rdlock(&(Locksmith::barrier_lock));
+	pthread_rwlock_rdlock(&(Gerente::barrier_lock));
 }

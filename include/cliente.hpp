@@ -9,6 +9,7 @@
 #define cliente_hpp
 
 #include <pthread.h>
+#include <semaphore.h>
 #include <stdio.h>
 #include "../include/pedido.hpp"
 #include "../include/threadedClass.hpp"
@@ -20,11 +21,8 @@ private:
 	static void* run(void* args);
 	Pedido decidir();
 	
-//	void levantarMao(); //chamar um garçom;
-//	void pedir();
-	
 public:
-//	static sem_t sem_pedido; //cliente com pedido em mãos
+	
 	Cliente();
 	
 	//inheritance
