@@ -9,14 +9,15 @@
 #define comanda_hpp
 
 #include <stdio.h>
+#include <unistd.h>
 #include "../include/cliente.hpp"
 #include "../include/pedido.hpp"
 
 class Comanda {
 private:
 	Pedido* p;
-	Cliente* c;
 public:
+	Cliente* c;
 	Comanda(Cliente* c,Pedido* p);
 };
 

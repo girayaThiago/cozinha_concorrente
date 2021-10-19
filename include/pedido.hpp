@@ -27,6 +27,7 @@ public:
 	void * c = NULL; //ponteiro maluco pro cliente;
 	
 	Pedido(int c, int a, int b);
+	Pedido();
 //	void * getCliente(void);
 };
 

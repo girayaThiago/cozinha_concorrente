@@ -20,10 +20,7 @@ private:
 	Comanda* comanda_atual;
 	inline static int instances = 0;
 	static void* run(void* args);
-	
 public:
-	void receber_comanda();
-	void devolver_pedido();
 	Chef();
 	//inheritance
 	void start(void);

@@ -17,14 +17,15 @@
 
 class Cliente: public ThreadedClass {
 private:
-	inline static int instances = 0;
+	
 	static void* run(void* args);
 	void decidir();
-	Pedido p;
+	
 public:
-	
+	inline static int instances = 0;
+	Pedido p;
 	Cliente();
-	
+	sem_t sem_pedido_chegou;
 	//inheritance
 	void start(void);
 };
