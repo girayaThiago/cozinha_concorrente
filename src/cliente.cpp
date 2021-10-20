@@ -34,6 +34,7 @@ void* Cliente::run(void* args){
 		sem_wait(&g.sem_mesas);
 	}
 	printf("Cliente %d pegou uma mesa\n", cliente->id);
+	sleep(rand()%3+1);
 	//2. escolher o pedido
 	cliente->decidir(); 
 	//3. inserir cliente na fila de atendimento;

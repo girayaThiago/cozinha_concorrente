@@ -16,10 +16,13 @@
 using namespace std;
 
 class Chef: public ThreadedClass{
-private:
+protected:
 	Comanda* comanda_atual;
 	inline static int instances = 0;
 	static void* run(void* args);
+	
+	void preparar_proteina(Proteina p);
+	void preparar_acompanhamento(Acompanhamento a);
 public:
 	Chef();
 	//inheritance

@@ -88,4 +88,10 @@ Gerente::Gerente(){
     sem_init(&sem_controle_clientes,0,1);
     sem_init(&sem_controle_pratos,0,1);
     sem_init(&sem_controle_contador,0,1);
+    sem_init(&sem_controle_acompanhamento,0,1);
+    sem_init(&sem_controle_proteina,0,1);
+
+    //estoques começam vazios
+    for(int i  = 0; i < N_PROTEINAS; i++) proteinas[i] = 0;
+	for(int i  = 0; i < N_ACOMPANHAMENTOS; i++) acompanhamentos[i] = 0;
 }

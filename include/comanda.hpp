@@ -15,10 +15,10 @@
 
 class Comanda {
 private:
-	Pedido* p;
 public:
+	Pedido* p;
 	Cliente* c;
 	Comanda(Cliente* c,Pedido* p);
-};
+};	
 
 #endif /* comanda_hpp */

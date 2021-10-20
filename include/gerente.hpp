@@ -21,6 +21,12 @@
 #define N_GARCOM 4
 #define N_MESAS 4
 
+//limites da cozinha
+#define N_PROTEINAS 3
+#define N_ACOMPANHAMENTOS 4
+#define MAX_PROTEINA 10
+#define MAX_ACOMP 5
+
 // classe que armazena locks globais... necessidade questionável.
 class Gerente{
 private:
@@ -35,7 +41,9 @@ public:
 	// variaveis globais
 	inline static int prioridade = 0; // controle de prioridade pedidos novos vs cuidar da cozinha;
 	inline static int resturante_aberto = N_CLIENTES;
-
+	//counting sort dos ingredientes disponíveis
+	int proteinas[3];
+	int acompanhamentos[4];
 	/// Usando um lock RW como barreira para todas as classes.
 	/// Todas as classes aguardam esse lock ser liberado para leitura para continuar.
 	/// Assim, nenhuma thread tenta acessar nada até que tudo esteja preparado.
@@ -53,6 +61,8 @@ public:
 	sem_t sem_controle_comandas;
 	sem_t sem_controle_pratos;
 	sem_t sem_controle_contador;
+	sem_t sem_controle_proteina;
+	sem_t sem_controle_acompanhamento;
 
 	void abrir_restaurante(); // libera as threads
 	static Gerente& getManager(); //pega o singleton do gerente.
