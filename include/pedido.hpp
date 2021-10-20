@@ -30,6 +30,7 @@ public:
 	
 	Pedido(int c, int a, int b); //construtor especifico
 	Pedido(); // construtor padrão para compliance com alocação estática de atributos de cliente.
+	void print(int id);
 };
 
 #endif /* Pedido_hpp */

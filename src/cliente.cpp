@@ -37,9 +37,10 @@ void* Cliente::run(void* args){
 	sleep(rand()%3+1);
 	//2. escolher o pedido
 	cliente->decidir(); 
+	
 	//3. inserir cliente na fila de atendimento;
 	g.cliente_para_fila(cliente);
-
+	printf("Cliente %d pediu atendimento\n", cliente->id);
 	//4. esperar pedido voltar
 	sem_wait(&cliente->sem_pedido_chegou);
 	printf("Cliente %d pegou seu prato e começou a comer\n", cliente->id);
@@ -54,6 +55,10 @@ void* Cliente::run(void* args){
 
 void Cliente::decidir() {
 	printf("Cliente %d está escolhendo o que comer\n", id);
-	sleep(rand()%4+1);
+	sleep(rand()%1+2);
+	
 	p = Pedido(rand()%3, rand()%4, rand()%4); //escolhe um prato random
+	printf("Cliente %d escolheu o que comer:\n", id);
+	p.print(id);
+	sleep(1);
 }
