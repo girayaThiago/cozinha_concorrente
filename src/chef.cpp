@@ -34,41 +34,44 @@ void* Chef::run(void *args){
 		//1. espera um pedido chegar;
 		sem_wait(&g.sem_sinal_cozinha);
 		Comanda* comanda = g.pegar_comanda();
-		if (comanda != NULL) {
-			printf("\t\tChef %d pegou a comanda do cliente %d\n", chef.id, comanda->c->id);
-			
-			//2. verifica a disponibilidade dos ingredientes
-			sem_wait(&g.sem_controle_proteina);
-			if (g.proteinas[comanda->p->prot] < 1) 
-				chef.preparar_proteina(comanda->p->prot); //se acabou repõe
-			g.proteinas[comanda->p->prot]--;
-			sem_post(&g.sem_controle_proteina);
+		if (comanda == NULL) {
+			printf("\t\tChef %d pegou uma comanda nula run to the hills!!\n\n");
+			exit(-1);
+		}
+		printf("\t\tChef %d pegou a comanda do cliente %d\n", chef.id, comanda->c->id);
+		
+		//2.enquanto prepara verifica a disponibilidade dos ingredientes
 
-			sleep(1); // demora pra servir.
-			printf("\t\tChef %d serviu proteina do cliente %d\n", chef.id, comanda->c->id);
-			
-			//acompanhamento 1
-			sem_wait(&g.sem_controle_acompanhamento);
-			if (g.acompanhamentos[comanda->p->acomps[0]] < 1) 
-				chef.preparar_acompanhamento(comanda->p->acomps[0]); //se acabou repõe
-			
-			sleep(1); // demora pra servir
-			printf("\t\tChef %d serviu acompanhamento do cliente %d\n", chef.id, comanda->c->id);
+		sem_wait(&g.sem_controle_proteina);
+		if (g.proteinas[comanda->p->prot] < 1) 
+			chef.preparar_proteina(comanda->p->prot); //se acabou repõe
+		g.proteinas[comanda->p->prot]--;
+		sem_post(&g.sem_controle_proteina);
 
-			//acompanhamento 2
-			g.acompanhamentos[comanda->p->acomps[0]]--;
-			if (g.acompanhamentos[comanda->p->acomps[1]] < 1) 
-				chef.preparar_acompanhamento(comanda->p->acomps[1]); //se acabou repõe
-			g.acompanhamentos[comanda->p->acomps[1]]--;
-			sem_post(&g.sem_controle_acompanhamento);
+		sleep(1); // demora pra servir.
+		printf("\t\tChef %d serviu proteina do cliente %d\n", chef.id, comanda->c->id);
+		
+		//acompanhamento 1
+		sem_wait(&g.sem_controle_acompanhamento);
+		if (g.acompanhamentos[comanda->p->acomps[0]] < 1) 
+			chef.preparar_acompanhamento(comanda->p->acomps[0]); //se acabou repõe
+		
+		sleep(1); // demora pra servir
+		printf("\t\tChef %d serviu acompanhamento do cliente %d\n", chef.id, comanda->c->id);
 
-			sleep(2); // servir e finalizar prato
-			
-			printf("\t\tChef %d preparou o pedido do cliente %d\n", chef.id, comanda->c->id);
-			
-			//3.devolve o pedido.
-			g.prato_para_fila(comanda);
-		} 
+		//acompanhamento 2
+		g.acompanhamentos[comanda->p->acomps[0]]--;
+		if (g.acompanhamentos[comanda->p->acomps[1]] < 1) 
+			chef.preparar_acompanhamento(comanda->p->acomps[1]); //se acabou repõe
+		g.acompanhamentos[comanda->p->acomps[1]]--;
+		sem_post(&g.sem_controle_acompanhamento);
+
+		sleep(2); // servir e finalizar prato
+		
+		printf("\t\tChef %d preparou o pedido do cliente %d\n", chef.id, comanda->c->id);
+		
+		//3.devolve o pedido.
+		g.prato_para_fila(comanda);
 	}
 	
 	return NULL;

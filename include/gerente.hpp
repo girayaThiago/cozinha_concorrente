@@ -21,9 +21,10 @@
 #define N_GARCOM 2
 #define N_MESAS 6
 
-//limites da cozinha
+// contagem dos enums (quantas proteinas e acompanhamentos diferentes temos)
 #define N_PROTEINAS 3
 #define N_ACOMPANHAMENTOS 4
+//limites da cozinha
 #define MAX_PROTEINA 2
 #define MAX_ACOMP 2
 
