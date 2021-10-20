@@ -25,6 +25,7 @@ public:
 	inline static int instances = 0; // contador de instancias.
 	Pedido p; // pedido que vai fazer.
 	Cliente(); // construtor padrão.
+	sem_t sem_pedido_chegou; // semaforo unico do cliente que está aguardando o pedido
 	//herança: função que cria a thread.
 	void start(void);
 };

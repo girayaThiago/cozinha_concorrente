@@ -41,7 +41,7 @@ public:
 	// variaveis globais
 	inline static int prioridade = 0; // controle de prioridade pedidos novos vs cuidar da cozinha;
 	inline static int resturante_aberto = N_CLIENTES;
-	//counting sort dos ingredientes disponíveis
+	//contagem dos ingredientes disponíveis
 	int proteinas[3];
 	int acompanhamentos[4];
 	/// Usando um lock RW como barreira para todas as classes.

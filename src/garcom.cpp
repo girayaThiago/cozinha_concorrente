@@ -27,10 +27,10 @@ void Garcom::atender(){
 		printf("\tErro, garçom %d pegou um cliente nulo para atender\n\n", id);
 		exit(-1);	
 	}
-	printf("\tGarçom %d atendendo cliente %d \n", garcom.id, c->id);
+	printf("\tGarçom %d atendendo cliente %d \n", id, c->id);
 	sleep(rand()%2+1);
-	Comanda* comanda = new Comanda(c,c->p);
-	printf("\tGarçom %d preparou comanda e enviou à cozinha\n", garcom.id);
+	Comanda* comanda = new Comanda(c,&c->p);
+	printf("\tGarçom %d preparou comanda e enviou à cozinha\n", id);
 	Gerente::getManager().comanda_para_fila(comanda);
 }
 
@@ -40,7 +40,7 @@ void Garcom::servir(){
 		printf("\tErro, garçom %d pegou um pedido nulo\n\n", id);
 		exit(-1);	
 	}
-	printf("\tGarçom %d pegou o prato do cliente %d\n", garcom.id, pratoPronto->c->id);
+	printf("\tGarçom %d pegou o prato do cliente %d\n", id, pratoPronto->c->id);
 	sleep(rand()%3+1);
 	sem_post(&(pratoPronto->c->sem_pedido_chegou)); //levou o prato
 	delete pratoPronto;

@@ -92,6 +92,5 @@ void Chef::preparar_acompanhamento(Acompanhamento a){
 	else exit(-1);
 
 	sleep(rand()%2+3);
-	printf("\t\tCozinheiro %d Terminou de preparar.\n", id);
 	Gerente::getManager().acompanhamentos[a] = MAX_ACOMP;
 }

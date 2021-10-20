@@ -25,7 +25,8 @@ public:
 	Garcom();
 	//herança: função que cria a thread.
 	void start(void);
-	static void atender(); //recebe um pedido de um cliente
+	void atender(); //recebe um pedido de um cliente/
+	void servir(); //levar um prato a um cliente.
 };
 
 
