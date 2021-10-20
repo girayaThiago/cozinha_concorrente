@@ -24,8 +24,8 @@
 //limites da cozinha
 #define N_PROTEINAS 3
 #define N_ACOMPANHAMENTOS 4
-#define MAX_PROTEINA 10
-#define MAX_ACOMP 5
+#define MAX_PROTEINA 2
+#define MAX_ACOMP 2
 
 // classe que armazena locks globais... necessidade questionável.
 class Gerente{
