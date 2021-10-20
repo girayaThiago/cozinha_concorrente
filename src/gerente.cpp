@@ -8,20 +8,23 @@
 
 #include "../include/gerente.hpp"
 
-//Inicializa todos os locks;
+// retorna referencia do singleton.
 Gerente& Gerente::getManager(){
     if (defaultManager == NULL) defaultManager = new Gerente();
     return *defaultManager;
 }
 
+// destrutor
 Gerente::~Gerente(){
     if (defaultManager != NULL) delete defaultManager;
 }
+
+// libera todas as threads
 void Gerente::abrir_restaurante(){
-    resturante_aberto = N_CLIENTES;
     pthread_rwlock_unlock(&barrier_lock);
 }
 
+// enfileira cliente e emite sinal para atendimento (garcom).
 void Gerente::cliente_para_fila(Cliente* c){
     sem_wait(&sem_controle_clientes); //concorrencia no acesso a fila
     fila_clientes.push(c);
@@ -29,6 +32,7 @@ void Gerente::cliente_para_fila(Cliente* c){
     sem_post(&sem_sinal_atendimento); //adiciona na fila e avisa que precisa de atendimento;
 }
 
+// desenfileira e retorna cliente para atendimento
 Cliente* Gerente::atender_cliente(){
     sem_wait(&sem_controle_clientes);
     if (fila_clientes.empty()) return NULL;
@@ -38,6 +42,7 @@ Cliente* Gerente::atender_cliente(){
     return c;
 }
 
+// enfileira comanda e envia sinal apra cozinha (chef)
 void Gerente::comanda_para_fila(Comanda* c){
     sem_wait(&sem_controle_comandas);
     fila_comandas.push(c);
@@ -45,6 +50,7 @@ void Gerente::comanda_para_fila(Comanda* c){
     sem_post(&sem_sinal_cozinha); //avisa a cozinha que tem um pedido para ser feito;
 }
 
+// desenfileira e retorna comanda.
 Comanda* Gerente::pegar_comanda(){
     sem_wait(&sem_controle_comandas);
     if (fila_comandas.empty()) return NULL;
@@ -54,6 +60,7 @@ Comanda* Gerente::pegar_comanda(){
     return c;
 }
 
+// enfileira prato (representado por uma comanda, para reduzir redundancia) e envia sinal para atendimento (garcom).
 void Gerente::prato_para_fila(Comanda* p){
     sem_wait(&sem_controle_pratos);
     fila_pratos_prontos.push(p);
@@ -61,6 +68,8 @@ void Gerente::prato_para_fila(Comanda* p){
     sem_post(&sem_controle_pratos);
     sem_post(&sem_sinal_atendimento);
 }
+
+// desenfileira e retorna prato (representado por uma comanda).
 Comanda* Gerente::pegar_prato(){
     sem_wait(&sem_controle_pratos);
     if (fila_pratos_prontos.empty()) return NULL;
@@ -70,6 +79,8 @@ Comanda* Gerente::pegar_prato(){
     sem_post(&sem_controle_pratos);
     return c;
 }
+
+//Inicializa todos os semáforos e recursos;
 Gerente::Gerente(){
     
     // restaurante começa fechado;

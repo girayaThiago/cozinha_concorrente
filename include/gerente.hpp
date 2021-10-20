@@ -31,9 +31,9 @@
 class Gerente{
 private:
 	inline static Gerente* defaultManager = NULL;
-	Gerente();
+	Gerente(); // construtor privado para usar apenas na singleton.
 	~Gerente();
-	void init();
+	void init(); // inicializa todos os recursos.
 	std::queue<Cliente*>fila_clientes;
 	std::queue<Comanda*>fila_comandas;
 	std::queue<Comanda*>fila_pratos_prontos;
