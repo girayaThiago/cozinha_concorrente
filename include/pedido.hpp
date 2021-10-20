@@ -24,13 +24,9 @@ public:
 	int id;
 	Proteina prot;
 	Acompanhamento acomps[2];
-	void * c = NULL; //ponteiro maluco pro cliente;
 	
 	Pedido(int c, int a, int b);
 	Pedido();
-//	void * getCliente(void);
 };
-
-
 
 #endif /* Pedido_hpp */
