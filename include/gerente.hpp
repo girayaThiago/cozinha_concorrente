@@ -18,8 +18,8 @@
 
 #define N_CLIENTES 12
 #define N_CHEF 2
-#define N_GARCOM 4
-#define N_MESAS 4
+#define N_GARCOM 2
+#define N_MESAS 6
 
 //limites da cozinha
 #define N_PROTEINAS 3
