@@ -16,17 +16,19 @@
 class ThreadedClass {
 protected:
 
-	pthread_t thread;
+	pthread_t thread; // thread da instancia
 	
-	//static void * run(void * args); todo mundo tem que ter uma dessas
-	
-	void wait();
+	///
+	/// static void * run(void * args); todo mundo tem que ter uma dessas <<<
+	///
+
+	void wait(); // aguarda liberação do lock para continuar executando. (aguardar barreira/broadcast).
 	
 public:
-	int id;
-	virtual void start(void) = 0;
+	int id; // id da instancia
+	virtual void start(void) = 0; // todas as classes devem implementar sua criação de thread.
 	
-	void join(void);
+	void join(void); // pthread_join
 	
 };
 

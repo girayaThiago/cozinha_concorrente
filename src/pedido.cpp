@@ -8,7 +8,7 @@
 #include "../include/pedido.hpp"
 
 Pedido::Pedido(int c, int a, int b){
-	id = instances++;
+	id = instances++; // truque para contar atribuir id = numero de instancias no momento de criação.
 	prot = Proteina(c);
 	acomps[0] = Acompanhamento(a);
 	acomps[1] = Acompanhamento(b);

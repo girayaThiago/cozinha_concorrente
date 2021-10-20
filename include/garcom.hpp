@@ -13,19 +13,19 @@
 #include "../include/comanda.hpp"
 #include <queue> // fila
 
+
+// Classe que representa um garçom
 class Garcom: public ThreadedClass {
 private:
-	
-	
 	inline static int instances = 0;
 	static void* run(void* args);
 	static sem_t sem_fila;
 	
 public:
 	Garcom();
-	//inheritance
+	//herança: função que cria a thread.
 	void start(void);
-	static void pedir(Cliente* c,Pedido* p); //recebe um pedido de um cliente
+	static void atender(); //recebe um pedido de um cliente
 };
 
 

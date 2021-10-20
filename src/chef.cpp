@@ -10,16 +10,23 @@
 #include <string>
 
 Chef::Chef(){
-	id = instances++;
+	id = instances++; // truque para contar atribuir id = numero de instancias no momento de criação.
 }
 
+/// cria a thread e executa a função run, passando como argumento uma referencia da instancia.
 void Chef::start(){
 	pthread_create(&thread, NULL, run, this);
 }
 
+// executa o comportamento da classe.
 void* Chef::run(void *args){
+	// recupera o gerente (acesso a variáveis globais e semáforos)
 	Gerente& g = Gerente::getManager();
+
+	// restaura referencia a instancia que gerou essa thread.
 	Chef& chef = *((Chef*)args);
+	
+	// aguarda liberação do lock.
 	chef.wait();
 	printf("\t\tChef %d começou\n", chef.id);
 	
@@ -36,13 +43,17 @@ void* Chef::run(void *args){
 				chef.preparar_proteina(comanda->p->prot); //se acabou repõe
 			g.proteinas[comanda->p->prot]--;
 			sem_post(&g.sem_controle_proteina);
+
+			sleep(1); // demora pra servir.
+			printf("\t\tChef %d serviu proteina do cliente %d\n", chef.id, comanda->c->id);
 			
 			//acompanhamento 1
 			sem_wait(&g.sem_controle_acompanhamento);
 			if (g.acompanhamentos[comanda->p->acomps[0]] < 1) 
 				chef.preparar_acompanhamento(comanda->p->acomps[0]); //se acabou repõe
 			
-			sleep(1);
+			sleep(1); // demora pra servir
+			printf("\t\tChef %d serviu acompanhamento do cliente %d\n", chef.id, comanda->c->id);
 
 			//acompanhamento 2
 			g.acompanhamentos[comanda->p->acomps[0]]--;
@@ -51,7 +62,7 @@ void* Chef::run(void *args){
 			g.acompanhamentos[comanda->p->acomps[1]]--;
 			sem_post(&g.sem_controle_acompanhamento);
 
-			sleep(rand()%3+2);
+			sleep(2); // servir e finalizar prato
 			
 			printf("\t\tChef %d preparou o pedido do cliente %d\n", chef.id, comanda->c->id);
 			
@@ -64,7 +75,6 @@ void* Chef::run(void *args){
 }
 
 void Chef::preparar_proteina(Proteina p){
-	std::string s;
 	if (p == 0) printf("\t\tAcabou Carne cozinheiro %d está preparando mais.\n", id );
 	else if (p == 1) printf("\t\tAcabou Porco cozinheiro %d está preparando mais.\n", id );
 	else if (p == 2) printf("\t\tAcabou Frango cozinheiro %d está preparando mais.\n", id );
@@ -75,7 +85,6 @@ void Chef::preparar_proteina(Proteina p){
 }
 
 void Chef::preparar_acompanhamento(Acompanhamento a){
-	std::string s;
 	if (a == 0) printf("\t\tAcabou Arroz cozinheiro %d está preparando mais.\n", id);
 	else if (a == 1) printf("\t\tAcabou Feijao cozinheiro %d está preparando mais.\n", id);
 	else if (a == 2) printf("\t\tAcabou Salada cozinheiro %d está preparando mais.\n", id);

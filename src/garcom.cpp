@@ -12,7 +12,7 @@
 #include <iostream>
 
 Garcom::Garcom(){
-	id = instances++;
+	id = instances++; // truque para contar atribuir id = numero de instancias no momento de criação.
 }
 using namespace std;
 
@@ -20,10 +20,30 @@ void Garcom::start(){
 	pthread_create(&thread, NULL, run, this);
 }
 
-void Garcom::pedir(Cliente* c, Pedido* p){
+void Garcom::atender(){
 	//encaminha para o gerente
-	Comanda comanda = Comanda(c,p);
-	Gerente::getManager().comanda_para_fila(&comanda);
+	Cliente* c = Gerente::getManager().atender_cliente();
+	if (c == NULL) {
+		printf("\tErro, garçom %d pegou um cliente nulo para atender\n\n", id);
+		exit(-1);	
+	}
+	printf("\tGarçom %d atendendo cliente %d \n", garcom.id, c->id);
+	sleep(rand()%2+1);
+	Comanda* comanda = new Comanda(c,c->p);
+	printf("\tGarçom %d preparou comanda e enviou à cozinha\n", garcom.id);
+	Gerente::getManager().comanda_para_fila(comanda);
+}
+
+void Garcom::servir(){
+	Comanda* pratoPronto = Gerente::getManager().pegar_prato();
+	if (pratoPronto == NULL){
+		printf("\tErro, garçom %d pegou um pedido nulo\n\n", id);
+		exit(-1);	
+	}
+	printf("\tGarçom %d pegou o prato do cliente %d\n", garcom.id, pratoPronto->c->id);
+	sleep(rand()%3+1);
+	sem_post(&(pratoPronto->c->sem_pedido_chegou)); //levou o prato
+	delete pratoPronto;
 }
 
 void* Garcom::run(void *args){
@@ -39,27 +59,12 @@ void* Garcom::run(void *args){
 		// 1 atendimento é novo pedido		
 		if (g.prioridade == 0) {
 			// 1.1 atender
-			Cliente* c = g.atender_cliente();
-			if (c != NULL) {
-				printf("\tGarçom %d atendendo cliente %d \n", garcom.id, c->id);
-				sleep(rand()%2+1);
-				Comanda* comanda = new Comanda(c,&c->p);
-				// 1.2 levar o pedido á cozinha (identificar o par cliente+pedido);
-				printf("\tGarçom %d preparou comanda e enviou à cozinha\n", garcom.id);
-				g.comanda_para_fila(comanda);
-			}
+			garcom.atender();
 		}
 		// 2 atendimento é pedido pronto 
 		else {
 			// 2.1 levar pedido para cliente
-			Comanda* pratoPronto = g.pegar_prato();
-			if (pratoPronto != NULL){
-				printf("\tGarçom %d pegou o prato do cliente %d\n", garcom.id, pratoPronto->c->id);
-				sleep(rand()%3);
-				sem_post(&(pratoPronto->c->sem_pedido_chegou)); //levou o prato
-				delete pratoPronto;
-			}
-			
+			garcom.servir();
 		}
 	}
 	

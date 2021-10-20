@@ -17,15 +17,15 @@ using namespace std;
 
 class Chef: public ThreadedClass{
 protected:
-	Comanda* comanda_atual;
-	inline static int instances = 0;
-	static void* run(void* args);
 	
-	void preparar_proteina(Proteina p);
-	void preparar_acompanhamento(Acompanhamento a);
+	inline static int instances = 0; //contador de instancias da classe
+	static void* run(void* args); //função para ser colocada como uma thread.
+	
+	void preparar_proteina(Proteina p); //preparar mais proteina p e atualiza valor de forma atômica.
+	void preparar_acompanhamento(Acompanhamento a); //preparar mais acompanhamento a e atualiza valor de forma atômica.
 public:
 	Chef();
-	//inheritance
+	//herança: função que cria a thread.
 	void start(void);
 };
 

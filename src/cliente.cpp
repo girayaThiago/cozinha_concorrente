@@ -14,8 +14,7 @@
 
 using namespace std;
 Cliente::Cliente() {
-	id = instances++;
-	sem_init(&sem_pedido_chegou,0,0);
+	id = instances++; // truque para contar atribuir id = numero de instancias no momento de criação.
 }
 
 

@@ -13,12 +13,13 @@
 #include "../include/cliente.hpp"
 #include "../include/pedido.hpp"
 
+// Abstração que vincula um pedido a um cliente (importante para o restaurante).
 class Comanda {
 private:
 public:
-	Pedido* p;
-	Cliente* c;
-	Comanda(Cliente* c,Pedido* p);
+	Pedido* p; //pedido que o cliente fez
+	Cliente* c; // o cliente que fez o pedido
+	Comanda(Cliente* c,Pedido* p); // construtor padrão.
 };	
 
 #endif /* comanda_hpp */

@@ -53,30 +53,28 @@ public:
 	sem_t sem_mesas; // representa clientes que possuem uma mesa no restaurante;
 	
 	// controle de fluxo sinais
-	sem_t sem_sinal_atendimento; // representa um sinal de atendimento (pedido pronto || cliente chamou)
-	sem_t sem_sinal_cozinha; // representa um sinal de preparo para a cozinha (pedido chegou);
+	sem_t sem_sinal_atendimento; 	// representa um sinal de atendimento (pedido pronto || cliente chamou)
+	sem_t sem_sinal_cozinha; 		// representa um sinal de preparo para a cozinha (pedido chegou);
 	sem_t sem_sinal_fim_expediente; // representa o fim do expediente, todos os clientes foram atendidos;
 	//controle de acesso a variáveis
-	sem_t sem_controle_clientes;
-	sem_t sem_controle_comandas;
-	sem_t sem_controle_pratos;
-	sem_t sem_controle_contador;
-	sem_t sem_controle_proteina;
-	sem_t sem_controle_acompanhamento;
+	sem_t sem_controle_clientes; 	// opera como um lock para interagir com a fila de clientes
+	sem_t sem_controle_comandas; 	// opera como um lock para interagir com a fila de comandas
+	sem_t sem_controle_pratos; 		// opera como um lock para interagir com a fila de pratos
+	sem_t sem_controle_contador;	// opera como um lock para interagir com a contagem de clientes no estabelecimento (encerramento do programa)
+	sem_t sem_controle_proteina;	// opera como um lock para interagir com os recursos de acompanhamentos
+	sem_t sem_controle_acompanhamento;// opera como um lock para interagir com os recursos de acompanhamentos
 
-	void abrir_restaurante(); // libera as threads
-	static Gerente& getManager(); //pega o singleton do gerente.
+	void abrir_restaurante(); 			// libera as threads
+	static Gerente& getManager(); 		//pega o singleton do gerente.
 	
-	void cliente_para_fila(Cliente* c);
-	Cliente* atender_cliente();
+	void cliente_para_fila(Cliente* c); // insere cliente na fila de atendimento de forma atomica e emite sinal para garçom
+	Cliente* atender_cliente(); 		// retira e retorna o primeiro cliente da fila de forma atomica.
 
-	void comanda_para_fila(Comanda* c);
-	Comanda* pegar_comanda();
+	void comanda_para_fila(Comanda* c);	// insere comanda na fila de preparo de forma atomica e emite sinal para cozinha
+	Comanda* pegar_comanda();			// retira e retorna a primeira comanda da fila de forma atomica.
 
-	void prato_para_fila(Comanda* p);
-	Comanda* pegar_prato();
-
-	void fechar_resturante();
+	void prato_para_fila(Comanda* p);	// insere prato na fila de pratos prontos de forma atomica e emite sinal para garçom
+	Comanda* pegar_prato();				// retira e retorna a primeiro prato da fila de forma atomica.
 };
 
 #endif /* gerente_hpp */

@@ -14,19 +14,18 @@
 #include "../include/pedido.hpp"
 #include "../include/threadedClass.hpp"
 
-
+// classe que representa o cliente.
 class Cliente: public ThreadedClass {
 private:
 	
-	static void* run(void* args);
-	void decidir();
+	static void* run(void* args); // função para thread.
+	void decidir(); // decidir qual pedido fazer.
 	
 public:
-	inline static int instances = 0;
-	Pedido p;
-	Cliente();
-	sem_t sem_pedido_chegou;
-	//inheritance
+	inline static int instances = 0; // contador de instancias.
+	Pedido p; // pedido que vai fazer.
+	Cliente(); // construtor padrão.
+	//herança: função que cria a thread.
 	void start(void);
 };
 
